@@ -32,7 +32,7 @@ template <typename AlgorithmT, typename FacadeT> class DataWatchdogImpl;
 template <typename AlgorithmT>
 class DataWatchdogImpl<AlgorithmT, datafacade::ContiguousInternalMemoryDataFacade<AlgorithmT>> final
 {
-    using mutex_type = typename storage::SharedMonitor<storage::SharedDataTimestamp>::mutex_type;
+    using mutex_type = typename storage::SharedMonitor<storage::SharedRegionRegister>::mutex_type;
     using Facade = datafacade::ContiguousInternalMemoryDataFacade<AlgorithmT>;
 
   public:
@@ -94,10 +94,10 @@ class DataWatchdogImpl<AlgorithmT, datafacade::ContiguousInternalMemoryDataFacad
         util::Log() << "DataWatchdog thread stopped";
     }
 
-    storage::SharedMonitor<storage::SharedDataTimestamp> barrier;
+    storage::SharedMonitor<storage::SharedRegionRegister> barrier;
     std::thread watcher;
     bool active;
-    unsigned timestamp;
+    storage::SharedRegionRegister::RegionID region;
     DataFacadeFactory<datafacade::ContiguousInternalMemoryDataFacade, AlgorithmT> facade_factory;
 };
 }
