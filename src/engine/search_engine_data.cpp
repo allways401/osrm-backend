@@ -93,6 +93,7 @@ void SearchEngineData<CH>::InitializeOrClearManyToManyThreadLocalStorage(unsigne
 
 void SearchEngineData<CH>::InitializeOrClearUnpackingCacheGlobalStorage(unsigned timestamp)
 {
+    boost::unique_lock<boost::shared_mutex> lock(_shared_access_across_threads);
     unpacking_cache.Clear(timestamp);
 }
 

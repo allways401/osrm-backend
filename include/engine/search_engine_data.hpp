@@ -6,7 +6,8 @@
 #include "util/query_heap.hpp"
 #include "util/typedefs.hpp"
 
-#include <boost/thread/tss.hpp>
+// #include <boost/thread/tss.hpp>
+#include <boost/thread.hpp>
 
 namespace osrm
 {
@@ -56,6 +57,8 @@ template <> struct SearchEngineData<routing_algorithms::ch::Algorithm>
     static SearchEngineHeapPtr reverse_heap_3;
     static ManyToManyHeapPtr many_to_many_heap;
     static UnpackingCache unpacking_cache;
+
+    boost::shared_mutex _shared_access_across_threads;
 
     void InitializeOrClearFirstThreadLocalStorage(unsigned number_of_nodes);
 
