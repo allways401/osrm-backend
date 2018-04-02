@@ -436,8 +436,10 @@ EdgeDistance computeEdgeDistance(const FacadeT &facade, NodeID node_id_1, NodeID
     const auto osm_id_2 = facade.GetOSMNodeIDOfNode(node_id_2);
     std::cout << "node_id_1: " << node_id_1 << std::endl;
     std::cout << "node_id_2: " << node_id_2 << std::endl;
-    std::cout << "node_id_1 as coordinate: " << coordinate_1.lon << ";" << coordinate_1.lat << std::endl;
-    std::cout << "node_id_2 as coordinate: " << coordinate_2.lon << ";" << coordinate_2.lat << std::endl;
+    std::cout << "node_id_1 as coordinate: " << coordinate_1.lon << ";" << coordinate_1.lat
+              << std::endl;
+    std::cout << "node_id_2 as coordinate: " << coordinate_2.lon << ";" << coordinate_2.lat
+              << std::endl;
     std::cout << "node_id_1 as osm_id: " << osm_id_1 << std::endl;
     std::cout << "node_id_2 as osm_id: " << osm_id_2 << std::endl;
     return util::coordinate_calculation::haversineDistance(coordinate_1, coordinate_2);
