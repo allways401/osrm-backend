@@ -424,6 +424,22 @@ EdgeDuration computeEdgeDuration(const FacadeT &facade, NodeID node_id, NodeID t
     return total_duration;
 }
 
+template <typename FacadeT>
+EdgeDuration computeEdgeDistance(const FacadeT &facade, NodeID node_id_1, NodeID node_id_2)
+{
+    // how do we get the second node_id?
+    // node_id_2 is not the node id that we want
+    const auto coordinate_1 = facade.GetCoordinateOfNode(node_id_1);
+    const auto coordinate_2 = facade.GetCoordinateOfNode(node_id_2);
+    const auto osm_id_1 = facade.GetOSMNodeIDOfNode(node_id_1);
+    const auto osm_id_2 = facade.GetOSMNodeIDOfNode(node_id_2);
+    std::cout << "coordinate_1: " << coordinate_1.lon << ", " << coordinate_1.lat << std::endl;
+    std::cout << "coordinate_2: " << coordinate_2.lon << ", " << coordinate_2.lat << std::endl;
+    std::cout << "osm_id_1: " << osm_id_1 << std::endl;
+    std::cout << "osm_id_2: " << osm_id_2 << std::endl;
+    return util::coordinate_calculation::haversineDistance(coordinate_1, coordinate_2);
+}
+
 } // namespace routing_algorithms
 } // namespace engine
 } // namespace osrm

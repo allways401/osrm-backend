@@ -566,7 +566,9 @@ class ContiguousInternalMemoryDataFacadeBase : public BaseDataFacade
     // node and edge information access
     util::Coordinate GetCoordinateOfNode(const NodeID id) const override final
     {
-        return m_coordinate_list[id];
+        return m_coordinate_list.at(id); // get default
+        // return m_coordinate_list[id]; causes socket to hang up when we pass in garbage node_is
+        // (turn_id)
     }
 
     OSMNodeID GetOSMNodeIDOfNode(const NodeID id) const override final
