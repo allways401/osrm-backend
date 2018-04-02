@@ -427,22 +427,62 @@ EdgeDuration computeEdgeDuration(const FacadeT &facade, NodeID node_id, NodeID t
 template <typename FacadeT>
 EdgeDistance computeEdgeDistance(const FacadeT &facade, NodeID node_id_1, NodeID node_id_2)
 {
-    // how do we get the second node_id?
-    // node_id_2 is not the node id that we want
+    (void)node_id_2;
+    const auto geometry_index = facade.GetGeometryIndex(node_id_1);
 
-    const auto coordinate_1 = facade.GetCoordinateOfNode(node_id_1);
-    const auto coordinate_2 = facade.GetCoordinateOfNode(node_id_2);
-    const auto osm_id_1 = facade.GetOSMNodeIDOfNode(node_id_1);
-    const auto osm_id_2 = facade.GetOSMNodeIDOfNode(node_id_2);
-    std::cout << "node_id_1: " << node_id_1 << std::endl;
-    std::cout << "node_id_2: " << node_id_2 << std::endl;
-    std::cout << "node_id_1 as coordinate: " << coordinate_1.lon << ";" << coordinate_1.lat
-              << std::endl;
-    std::cout << "node_id_2 as coordinate: " << coordinate_2.lon << ";" << coordinate_2.lat
-              << std::endl;
-    std::cout << "node_id_1 as osm_id: " << osm_id_1 << std::endl;
-    std::cout << "node_id_2 as osm_id: " << osm_id_2 << std::endl;
-    return util::coordinate_calculation::haversineDistance(coordinate_1, coordinate_2);
+    // datastructures to hold extracted data from geometry
+    EdgeDistance total_distance = 0.0;
+
+    if (geometry_index.forward)
+    {
+        auto geometry_range = facade.GetUncompressedForwardGeometry(geometry_index.id);
+
+        for (auto current = geometry_range.begin() + 1; current != geometry_range.end(); ++current)
+        {
+
+            auto prev = current - 1;
+
+            const auto coordinate_1 = facade.GetCoordinateOfNode(*prev);
+            const auto coordinate_2 = facade.GetCoordinateOfNode(*current);
+
+            total_distance +=
+                util::coordinate_calculation::haversineDistance(coordinate_1, coordinate_2);
+        }
+    }
+    else
+    {
+        auto geometry_range = facade.GetUncompressedReverseDurations(geometry_index.id);
+        for (auto current = geometry_range.begin() + 1; current != geometry_range.end(); ++current)
+        {
+
+            auto prev = current - 1;
+
+            const auto coordinate_1 = facade.GetCoordinateOfNode(*prev);
+            const auto coordinate_2 = facade.GetCoordinateOfNode(*current);
+
+            total_distance +=
+                util::coordinate_calculation::haversineDistance(coordinate_1, coordinate_2);
+        }
+    }
+
+    return total_distance;
+
+    // // how do we get the second node_id?
+    // // node_id_2 is not the node id that we want
+
+    // const auto coordinate_1 = facade.GetCoordinateOfNode(node_id_1);
+    // const auto coordinate_2 = facade.GetCoordinateOfNode(node_id_2);
+    // const auto osm_id_1 = facade.GetOSMNodeIDOfNode(node_id_1);
+    // const auto osm_id_2 = facade.GetOSMNodeIDOfNode(node_id_2);
+    // std::cout << "node_id_1: " << node_id_1 << std::endl;
+    // std::cout << "node_id_2: " << node_id_2 << std::endl;
+    // std::cout << "node_id_1 as coordinate: " << coordinate_1.lon << ";" << coordinate_1.lat
+    //           << std::endl;
+    // std::cout << "node_id_2 as coordinate: " << coordinate_2.lon << ";" << coordinate_2.lat
+    //           << std::endl;
+    // std::cout << "node_id_1 as osm_id: " << osm_id_1 << std::endl;
+    // std::cout << "node_id_2 as osm_id: " << osm_id_2 << std::endl;
+    // return util::coordinate_calculation::haversineDistance(coordinate_1, coordinate_2);
 }
 
 } // namespace routing_algorithms

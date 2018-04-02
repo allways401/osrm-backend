@@ -282,6 +282,7 @@ std::vector<EdgeDuration> manyToManySearch(SearchEngineData<ch::Algorithm> &engi
             if (source_index == target_index)
             {
                 durations_table[row_idx * number_of_targets + column_idx] = 0;
+                distance_table[row_idx * number_of_targets + column_idx] = 0.0;
                 continue;
             }
 
@@ -293,7 +294,7 @@ std::vector<EdgeDuration> manyToManySearch(SearchEngineData<ch::Algorithm> &engi
                 durations_table[row_idx * number_of_targets + column_idx] =
                     MAXIMAL_EDGE_DURATION; // should this be invalid edge duration? what is the
                                            // difference between maximal and invalid?
-                durations_table[row_idx * number_of_targets + column_idx] = MAXIMAL_EDGE_DISTANCE;
+                distance_table[row_idx * number_of_targets + column_idx] = MAXIMAL_EDGE_DISTANCE;
                 continue;
             }
 
