@@ -321,7 +321,7 @@ std::vector<EdgeDuration> manyToManySearch(SearchEngineData<ch::Algorithm> &engi
                     ch::calculateEBGNodeAnnotations(facade,
                                                     packed_leg.begin(),
                                                     packed_leg.end(),
-                                                    *engine_working_data.unpacking_cache.get());
+                                                    engine_working_data.unpacking_cache);
 
                 // check the direction of travel to figure out how to calculate the offset to/from
                 // the source/target

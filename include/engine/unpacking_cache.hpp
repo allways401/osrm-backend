@@ -20,7 +20,7 @@ class UnpackingCache
     boost::shared_mutex m_shared_access;
 
   public:
-    UnpackingCache(unsigned timestamp) : m_cache(6000000), m_current_data_timestamp(timestamp){};
+    UnpackingCache() : m_cache(6000000){};
 
     void Clear(unsigned new_data_timestamp)
     {
