@@ -17,13 +17,16 @@ class UnpackingCache
     unsigned current_data_timestamp = 0;
 
   public:
-    // Assuming max cache size is 500mb (see bottom of OP here:
-    // https://github.com/Project-OSRM/osrm-backend/issues/4798#issue-288608332
-    // Assuming std::size_t is 64 bits:
-    // Current cache line = NodeID * 2 + std::size_t * 1 + EdgeDuration * 1 = std::uint32_t * 2 +
-    // std::size_t * 1 + std::int32_t * 1 = 4 bytes * 3 + 8 bytes = 20 bytes
+    // TO FIGURE OUT HOW MANY LINES TO INITIALIZE CACHE TO:
+    // Assume max cache size is 500mb (see bottom of OP here:
+    // https://github.com/Project-OSRM/osrm-backend/issues/4798#issue-288608332)
     // Total cache size: 500 mb = 500 * 1024 *1024 bytes = 524288000 bytes
+    // Assume std::size_t is 64 bits (my local machine this is the case):
+    // Current cache line = NodeID * 2 + std::size_t * 1 + EdgeDuration * 1
+    //                    = std::uint32_t * 2 + std::size_t * 1 + std::int32_t * 1
+    //                    = 4 bytes * 3 + 8 bytes = 20 bytes
     // Number of cache lines is 500 mb = 500 * 1024 *1024 bytes = 524288000 bytes / 20 = 26214400
+    // Actually it should be 26214400 divided by the number of threads available
 
     UnpackingCache(unsigned timestamp) : cache(26214400), current_data_timestamp(timestamp){};
 
